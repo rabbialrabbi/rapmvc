@@ -10,7 +10,7 @@ class Route extends Router{
         parent::get('/',['CalendarController','index']);
         parent::get('/home',['HomeController','index']);
         parent::get('/calendar',['CalendarController','index']);
-        parent::get('Hello/go',['CalendarController','index']);
+        parent::get('test',['TestController','index']);
     }
 }
 

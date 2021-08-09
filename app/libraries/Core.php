@@ -28,9 +28,9 @@ class Core
             $this->params['request'] = $request;
 
             /*Check and include current controller*/
+//            echo $this->currentController;
             if (file_exists('../app/Controllers/' . ucwords($this->currentController) . '.php')) {
-                include_once '../app/Controllers/' . ucwords($this->currentController) . '.php';
-                $className = "\\App\\Controller\\".$this->currentController;
+                $className = "\\App\\Controllers\\".$this->currentController;
                 $this->currentController = new $className;
             } else {
                 throw new \Exception('Controller not found');

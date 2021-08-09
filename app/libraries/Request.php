@@ -6,7 +6,7 @@ class Request
 {
 
     private $base = '';
-    public $all = [];
+    public $all = '';
     public $httpTyp = 'get';
 
     public function __construct()
