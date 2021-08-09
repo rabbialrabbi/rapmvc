@@ -1,5 +1,10 @@
 <?php
 
+namespace App\Libraries;
+
+
+use App\Router\Route;
+
 class Core
 {
 
@@ -9,31 +14,37 @@ class Core
 
     public function __construct()
     {
-        $url = $this->getUrl();
+        try {
 
 
-        // Update Current controller
-        if (file_exists('../app/controllers/' . ucwords($url[0]) . 'Controller.php')) {
-            $this->currentController = ucwords($url[0]) . 'Controller';
-            unset($url[0]);
-        }
-        //include current controller
-        include_once '../app/controllers/' . ucwords($this->currentController) . '.php';
+            $route = (new Route())->routes();
+            $request = new Request();
 
-        $this->currentController = new $this->currentController();
+            $controller = strtolower($request->baseUrl());
+            $route = Router::getURL($request->httpType(), $controller);
+            $this->currentController = $route['controller'];
+            $this->currentMethod = $route['method'];
 
-        if (isset($url[1])) {
-            if (method_exists($this->currentController, $url[1])) {
-                $this->currentMethod = $url[1];
+            $this->params['request'] = $request;
+
+            /*Check and include current controller*/
+            if (file_exists('../app/Controllers/' . ucwords($this->currentController) . '.php')) {
+                include_once '../app/Controllers/' . ucwords($this->currentController) . '.php';
+                $className = "\\App\\Controller\\".$this->currentController;
+                $this->currentController = new $className;
+            } else {
+                throw new \Exception('Controller not found');
             }
-            unset($url[1]);
+            /*Check method exists */
+            if (!method_exists($this->currentController, $this->currentMethod)) {
+                throw new \Exception('Method not found');
+            }
+
+            call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
+
+        } catch (\Exception $e) {
+            echo $e->getMessage() . "\n";
         }
-
-
-        $this->params = $url ? array_values($url) : [];
-
-        /* edo create exception for not set method*/
-        call_user_func_array([$this->currentController,$this->currentMethod],$this->params);
 
 
     }

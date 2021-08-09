@@ -1,6 +1,9 @@
 <?php
 
-class Database {
+namespace App\Libraries;
+
+class Database
+{
 
     protected $host = DB_HOST;
     protected $dbName = DB_NAME;
@@ -15,16 +18,16 @@ class Database {
     public function __construct()
     {
         try {
-            $dsn = 'mysql:host='.$this->host.';dbname='.$this->dbName ;
+            $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbName;
 
             $option = [
-                PDO::ATTR_PERSISTENT=>true,
+                PDO::ATTR_PERSISTENT => true,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ];
 
-             $this->db = new PDO($dsn,$this->userName,$this->password,$option);
+            $this->db = new PDO($dsn, $this->userName, $this->password, $option);
 
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
 
             $this->error = $e->getMessage();
 
@@ -40,10 +43,10 @@ class Database {
         $this->stmt = $this->db->prepare($this->stmt);
     }
 
-    public function bindValue($param,$value,$type=null)
+    public function bindValue($param, $value, $type = null)
     {
-        if($type==null){
-            switch (true){
+        if ($type == null) {
+            switch (true) {
                 case (is_numeric($value)):
                     $type = PDO::PARAM_INT;
                     break;
@@ -57,7 +60,7 @@ class Database {
                     $type = PDO::PARAM_STR;
             }
         }
-        $this->stmt->bindValue($param,$value,$type);
+        $this->stmt->bindValue($param, $value, $type);
     }
 
     public function execute()

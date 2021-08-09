@@ -1,6 +1,9 @@
 <?php
 
-class Session {
+namespace App\Libraries;
+
+class Session
+{
     public function __construct()
     {
         session_start();
@@ -10,10 +13,12 @@ class Session {
     {
         return $_SESSION[$key];
     }
-    public function set($key,$value)
+
+    public function set($key, $value)
     {
         $_SESSION[$key] = $value;
     }
+
     public function remove($key)
     {
         $_SESSION[$key] = '';
@@ -21,7 +26,7 @@ class Session {
 
     public function isLogin()
     {
-        if(!$this->get('email')) {
+        if (!$this->get('email')) {
             header("location: " . SITE_URL . "/login");
         }
 

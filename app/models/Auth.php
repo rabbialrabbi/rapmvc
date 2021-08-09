@@ -1,4 +1,7 @@
 <?php
+
+namespace App\Models;
+
 class Auth {
     protected $db;
     public function __construct()
