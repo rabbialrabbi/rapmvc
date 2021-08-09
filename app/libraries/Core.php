@@ -8,7 +8,7 @@ use App\Router\Route;
 class Core
 {
 
-    protected $currentController = 'PageController';
+    protected $currentController = 'HomeController';
     protected $currentMethod = 'index';
     protected $params = [];
 

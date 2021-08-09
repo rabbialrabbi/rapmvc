@@ -10,7 +10,8 @@ class Router
     public static function get($route, $controller)
     {
         $routeTrims = $route;
-        if(substr($routeTrims, 0,1) == '/') {
+
+        if(strlen($routeTrims) > 1 && substr($routeTrims, 0,1) == '/') {
             $routeTrims = substr($route, 1);
         }
         $routeTrims = strtolower($routeTrims);
@@ -32,6 +33,10 @@ class Router
 
     public static function getURL($httpType, $route)
     {
+//        echo '<pre>';
+//        print_r(self::$get);
+//        echo '</pre>';
+
         if ($httpType == 'get') {
             if (array_key_exists($route, self::$get)) {
                 return self::$get[$route];
